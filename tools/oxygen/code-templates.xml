@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serialized version="22.1" xml:space="preserve">
+	<serializableOrderedMap>
+		<entry>
+			<String>code-templates</String>
+			<codeTemplateItem-array>
+				<codeTemplateItem>
+					<field name="contentType">
+						<String>text/xml</String>
+					</field>
+					<field name="unparsedInsertString">
+						<String>&lt;div 
+    type="factoid" subtype="${ask('factoid subtype', input_type, 'relation')}" 
+    xml:id="factoid-${xpath_eval(string(max(//div/@xml:id/number(replace(.,'factoid-','')))+1))}" 
+    resp="${xpath_eval(//div[@resp][last()]/@resp)}">
+    &lt;idno type="URI">${xpath_eval(replace(//div[starts-with(idno,'https://usaybia.net/factoid')][last()]/idno/text(),'(https://usaybia.net/factoid/\d+-\d+-).*','$1'))}${xpath_eval(string(max(//div/@xml:id/number(replace(.,'factoid-','')))+1))}&lt;/idno>
+    &lt;!-- Insert factoid content here -->
+    &lt;!-- Check if you need to update bibl -->
+    ${xpath_eval(//div[bibl/citedRange][last()]/bibl)}
+&lt;/div></String>
+					</field>
+					<field name="descriptionString">
+						<String>Factoid</String>
+					</field>
+					<field name="renderString">
+						<String>usy:factoid</String>
+					</field>
+					<field name="enabled">
+						<Boolean>true</Boolean>
+					</field>
+					<field name="accelerator">
+						<String>M1 M2 F</String>
+					</field>
+				</codeTemplateItem>
+				<codeTemplateItem>
+					<field name="contentType">
+						<String>text/xml</String>
+					</field>
+					<field name="unparsedInsertString">
+						<String>${selection}
+    &lt;listRelation>
+        &lt;relation ref="${ask('What type of relation is it?', input_type, 'default_value')}" 
+            mutual="${xpath_eval(parse-xml('${selection}')//persName[1]/@ref)} 
+            ${xpath_eval(parse-xml('${selection}')//persName[2]/@ref)}">
+            &lt;desc>                
+                &lt;persName ref="${xpath_eval(parse-xml('${selection}')//persName[1]/@ref)}">&lt;!--insert person 1 name-->&lt;/persName> 
+                &lt;!--describe relationship in short phrase, e.g., "corresponded with"--> 
+                &lt;persName ref="${xpath_eval(parse-xml('${selection}')//persName[2]/@ref)}">&lt;!--insert person 2 name-->&lt;/persName>.
+            &lt;/desc>
+        &lt;/relation>
+    &lt;/listRelation></String>
+					</field>
+					<field name="descriptionString">
+						<String>Adds a mutual relation factoid between two selected URIs</String>
+					</field>
+					<field name="renderString">
+						<String>usy:relation</String>
+					</field>
+					<field name="enabled">
+						<Boolean>true</Boolean>
+					</field>
+					<field name="accelerator">
+						<String>M1 M2 R</String>
+					</field>
+				</codeTemplateItem>
+			</codeTemplateItem-array>
+		</entry>
+	</serializableOrderedMap>
+</serialized>
