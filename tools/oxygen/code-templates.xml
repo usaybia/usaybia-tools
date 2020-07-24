@@ -38,17 +38,17 @@
 					</field>
 					<field name="unparsedInsertString">
 						<String>${selection}
-    &lt;listRelation>
-        &lt;relation ref="${ask('What type of relation is it?', input_type, 'default_value')}" 
-            mutual="${xpath_eval(parse-xml('${selection}')//persName[1]/@ref)} 
-            ${xpath_eval(parse-xml('${selection}')//persName[2]/@ref)}">
-            &lt;desc>                
-                &lt;persName ref="${xpath_eval(parse-xml('${selection}')//persName[1]/@ref)}">&lt;!--insert person 1 name-->&lt;/persName> 
-                &lt;!--describe relationship in short phrase, e.g., "corresponded with"--> 
-                &lt;persName ref="${xpath_eval(parse-xml('${selection}')//persName[2]/@ref)}">&lt;!--insert person 2 name-->&lt;/persName>.
-            &lt;/desc>
-        &lt;/relation>
-    &lt;/listRelation></String>
+&lt;listRelation>
+    &lt;relation ref="${ask('What type of relation is it?', input_type, 'default_value')}" 
+        mutual="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)} 
+        ${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
+        &lt;desc>                
+            &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">&lt;!--insert person 1 name-->&lt;/persName> 
+            &lt;!--describe relationship in short phrase, e.g., "corresponded with"--> 
+            &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">&lt;!--insert person 2 name-->&lt;/persName>.
+        &lt;/desc>
+    &lt;/relation>
+&lt;/listRelation></String>
 					</field>
 					<field name="descriptionString">
 						<String>Adds a mutual relation factoid between two selected URIs</String>
