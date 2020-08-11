@@ -13,7 +13,7 @@
 &lt;listPerson>
     &lt;person>
         &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}"/>
-            &lt;${ask('Type "birth" or "death"', input_type, 'death')}>
+            &lt;${ask('Type "birth" or "death"', input_type, 'death',@bd)}>
             &lt;choice>
                 &lt;reg>&lt;date when="${ask('Gregorian (regularized) date, with leading 0, e.g., 0950', input_type, 'default_value')}" 
                     calendar="Gregorian">&lt;!-- insert Gregorian date -->&lt;/date>&lt;/reg>
@@ -31,7 +31,7 @@
 						${xpath_eval(doc('../../places/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref,'https://usaybia.net/place/',''))}.xml')//placeName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
 					&lt;/placeName>.
             &lt;/note>
-        &lt;/${ask('Type "birth" or "death" (must be same as previous)', input_type, 'death')}>
+        &lt;/${answer(@bd)}>
     &lt;/person>
 &lt;/listPerson></String>
 					</field>
@@ -57,7 +57,7 @@
 &lt;listPerson>
     &lt;person>
         &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}"/>
-        &lt;${ask('Type "birth" or "death"', input_type, 'death')}>
+        &lt;${ask('Type "birth" or "death"', input_type, 'death',@bd)}>
             &lt;placeName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}"/>
             &lt;note type="desc">
 				&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
@@ -68,7 +68,7 @@
 					${xpath_eval(doc('../../places/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref,'https://usaybia.net/place/',''))}.xml')//placeName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
 				&lt;/placeName>.
             &lt;/note>
-            &lt;/${ask('Type "birth" or "death" (must be same as previous)', input_type, 'death')}>
+            &lt;/${answer(@bd)}>
     &lt;/person>
 &lt;/listPerson></String>
 					</field>
