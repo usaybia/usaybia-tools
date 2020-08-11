@@ -177,6 +177,7 @@
 						<String>M1 M2 O</String>
 					</field>
 				</codeTemplateItem>
+				<!-- Assumes open file is in a data/*/tei/ of the usaybia-data repo -->
 				<codeTemplateItem>
 					<field name="contentType">
 						<String>text/xml</String>
