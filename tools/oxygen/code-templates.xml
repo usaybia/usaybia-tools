@@ -183,18 +183,22 @@
 					</field>
 					<field name="unparsedInsertString">
 						<String>${selection}
-&lt;listRelation>
-    &lt;relation ref="http://syriaca.org/keyword/${ask('Enter the final part of the keyword URI 
-    to be added to http://syriaca.org/keyword/', input_type, '')}" 
-        mutual="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)} 
-        ${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
-        &lt;desc>                
-            &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">&lt;!--insert person 1 name-->&lt;/persName> 
-            &lt;!--describe relationship in short phrase, e.g., "corresponded with"--> 
-            &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">&lt;!--insert person 2 name-->&lt;/persName>.
-        &lt;/desc>
-    &lt;/relation>
-&lt;/listRelation></String>
+							&lt;listRelation>
+								&lt;relation ref="http://syriaca.org/keyword/${ask('Enter the final part of the keyword URI 
+								to be added to http://syriaca.org/keyword/', input_type, '')}" 
+									mutual="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)} 
+									${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
+									&lt;desc>                
+										&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+											${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+										&lt;/persName> 
+										&lt;!--describe relationship in short phrase, e.g., "corresponded with"--> 
+										&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
+											${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+										&lt;/persName>.
+									&lt;/desc>
+								&lt;/relation>
+							&lt;/listRelation></String>
 					</field>
 					<field name="descriptionString">
 						<String>Adds a mutual relation factoid between two selected URIs</String>
