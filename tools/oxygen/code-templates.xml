@@ -22,11 +22,14 @@
             &lt;/choice>
             &lt;note type="desc">
                 &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
-                    &lt;!--insert person name-->&lt;/persName>
+					${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+				&lt;/persName>
                 &lt;!--was born/died -->
                 &lt;!-- optional place --> at 
                 &lt;placeName
-                    ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}">&lt;!--insert place name-->&lt;/placeName>.
+					ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}">
+						${xpath_eval(doc('../../places/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref,'https://usaybia.net/place/',''))}.xml')//placeName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+					&lt;/placeName>.
             &lt;/note>
         &lt;/${ask('Type "birth" or "death" (must be same as previous)', input_type, 'death')}>
     &lt;/person>
@@ -57,9 +60,13 @@
         &lt;${ask('Type "birth" or "death"', input_type, 'death')}>
             &lt;placeName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}"/>
             &lt;note type="desc">
-                &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">&lt;!--insert person name-->&lt;/persName>
+				&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+					${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+				&lt;/persName>
                 &lt;!-- was born in/died in -->  
-                &lt;placeName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}">&lt;!--insert place name-->&lt;/placeName>.
+				&lt;placeName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}">
+					${xpath_eval(doc('../../places/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref,'https://usaybia.net/place/',''))}.xml')//placeName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+				&lt;/placeName>.
             &lt;/note>
             &lt;/${ask('Type "birth" or "death" (must be same as previous)', input_type, 'death')}>
     &lt;/person>
@@ -95,10 +102,14 @@
             &lt;orig>&lt;date when="${ask('Hijri date from text, with leading 0, e.g., 0950', input_type, 'default_value')}" 
                 calendar="Hijri">&lt;!-- insert Hijri date -->&lt;/date>&lt;/orig>
         &lt;/choice>, 
-        &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">&lt;!--insert person name-->&lt;/persName>
+		&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+			${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+		&lt;/persName>
         &lt;!--insert description of event -->
         at &lt;!-- optional place -->&lt;placeName
-            ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}">&lt;!--insert place name-->&lt;/placeName>.&lt;/desc>
+			ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}">
+				${xpath_eval(doc('../../places/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref,'https://usaybia.net/place/',''))}.xml')//placeName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+			&lt;/placeName>.&lt;/desc>
 &lt;/event></String>
 					</field>
 					<field name="descriptionString">
@@ -155,10 +166,14 @@
         &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}"/>
         &lt;occupation ana="http://syriaca.org/keyword/${ask('Enter the final part of the keyword URI 
             to be added to http://syriaca.org/keyword/', input_type, '')}">
-            &lt;note>&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">&lt;!--insert person name-->&lt;/persName>
+			&lt;note>&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+							${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+			&lt;/persName>
                 was &lt;!-- occupation --> 
                 &lt;!-- optional place -->
-                at &lt;placeName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}">&lt;!--insert place name-->&lt;/placeName>.
+				at &lt;placeName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}">
+					${xpath_eval(doc('../../places/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref,'https://usaybia.net/place/',''))}.xml')//placeName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+				&lt;/placeName>.
             &lt;/note>
         &lt;/occupation>
     &lt;/person>
@@ -226,9 +241,13 @@
         active="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}"
         passive="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
         &lt;desc>                
-            &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">&lt;!--insert person 1 name-->&lt;/persName> 
+			&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+			${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+			&lt;/persName> 
             &lt;!--describe relationship in short phrase, e.g., "corresponded with"--> 
-            &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">&lt;!--insert person 2 name-->&lt;/persName>.
+			&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
+				${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+			&lt;/persName>.
         &lt;/desc>
     &lt;/relation>
 &lt;/listRelation></String>
@@ -258,9 +277,13 @@
         active="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}"
         passive="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
         &lt;desc>                
-            &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">&lt;!--insert person 2 name-->&lt;/persName> 
+			&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
+				${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+			&lt;/persName> 
             &lt;!--describe relationship in short phrase, e.g., "corresponded with"--> 
-            &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">&lt;!--insert person 1 name-->&lt;/persName>.
+			&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+				${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+			&lt;/persName>.
         &lt;/desc>
     &lt;/relation>
 &lt;/listRelation></String>
