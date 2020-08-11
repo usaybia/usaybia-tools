@@ -184,7 +184,8 @@
 					<field name="unparsedInsertString">
 						<String>${selection}
 &lt;listRelation>
-    &lt;relation ref="${ask('What type of relation is it?', input_type, 'default_value')}" 
+    &lt;relation ref="http://syriaca.org/keyword/${ask('Enter the final part of the keyword URI 
+    to be added to http://syriaca.org/keyword/', input_type, '')}" 
         mutual="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)} 
         ${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
         &lt;desc>                
@@ -215,7 +216,8 @@
 					<field name="unparsedInsertString">
 						<String>${selection}
 &lt;listRelation>
-    &lt;relation ref="${ask('What type of relation is it?', input_type, 'default_value')}" 
+    &lt;relation ref="http://syriaca.org/keyword/${ask('Enter the final part of the keyword URI 
+    to be added to http://syriaca.org/keyword/', input_type, '')}" 
         active="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}"
         passive="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
         &lt;desc>                
@@ -246,7 +248,8 @@
 					<field name="unparsedInsertString">
 						<String>${selection}
 &lt;listRelation>
-    &lt;relation ref="${ask('What type of relation is it?', input_type, 'default_value')}" 
+    &lt;relation ref="http://syriaca.org/keyword/${ask('Enter the final part of the keyword URI 
+    to be added to http://syriaca.org/keyword/', input_type, '')}" 
         active="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}"
         passive="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
         &lt;desc>                
