@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serialized version="22.1" xml:space="preserve">
+	<serializableOrderedMap>
+		<entry>
+			<String>code-templates</String>
+			<codeTemplateItem-array>
+				<codeTemplateItem>
+					<field name="contentType">
+						<String>text/xml</String>
+					</field>
+					<field name="unparsedInsertString">
+						<String>${selection}
+&lt;listPerson>
+    &lt;person>
+        &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}"/>
+            &lt;${ask('Type "birth" or "death"', input_type, 'death',@bd)}>
+            &lt;choice>
+                &lt;reg>&lt;date when="${ask('Gregorian (regularized) date, with leading 0, e.g., 0950', input_type, 'default_value')}" 
+                    calendar="Gregorian">&lt;!-- insert Gregorian date -->&lt;/date>&lt;/reg>
+                &lt;orig>&lt;date when="${ask('Hijri date from text, with leading 0, e.g., 0950', input_type, 'default_value')}" 
+                    calendar="Hijri">&lt;!-- insert Hijri date -->&lt;/date>&lt;/orig>
+            &lt;/choice>
+            &lt;note type="desc">
+                &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+					${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+				&lt;/persName>
+                &lt;!--was born/died -->
+                &lt;!-- optional place --> at 
+                &lt;placeName
+					ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}">
+						${xpath_eval(doc('../../places/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref,'https://usaybia.net/place/',''))}.xml')//placeName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+					&lt;/placeName>.
+            &lt;/note>
+        &lt;/${answer(@bd)}>
+    &lt;/person>
+&lt;/listPerson></String>
+					</field>
+					<field name="descriptionString">
+						<String>Adds birthDate/deathDate factoid content for a selected person</String>
+					</field>
+					<field name="renderString">
+						<String>usy:birthDate/deathDate</String>
+					</field>
+					<field name="enabled">
+						<Boolean>true</Boolean>
+					</field>
+					<field name="accelerator">
+						<String>M1 M2 D</String>
+					</field>
+				</codeTemplateItem>
+				<codeTemplateItem>
+					<field name="contentType">
+						<String>text/xml</String>
+					</field>
+					<field name="unparsedInsertString">
+						<String>${selection}
+&lt;listPerson>
+    &lt;person>
+        &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}"/>
+        &lt;${ask('Type "birth" or "death"', input_type, 'death',@bd)}>
+            &lt;placeName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}"/>
+            &lt;note type="desc">
+				&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+					${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+				&lt;/persName>
+                &lt;!-- was born in/died in -->  
+				&lt;placeName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}">
+					${xpath_eval(doc('../../places/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref,'https://usaybia.net/place/',''))}.xml')//placeName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+				&lt;/placeName>.
+            &lt;/note>
+            &lt;/${answer(@bd)}>
+    &lt;/person>
+&lt;/listPerson></String>
+					</field>
+					<field name="descriptionString">
+						<String>Adds birthPlace/deathPlace factoid content for a selected person and place URI</String>
+					</field>
+					<field name="renderString">
+						<String>usy:birthPlace/deathPlace</String>
+					</field>
+					<field name="enabled">
+						<Boolean>true</Boolean>
+					</field>
+					<field name="accelerator">
+						<String>M1 M2 B</String>
+					</field>
+				</codeTemplateItem>
+				<codeTemplateItem>
+					<field name="contentType">
+						<String>text/xml</String>
+					</field>
+					<field name="unparsedInsertString">
+						<String>${selection}
+&lt;event
+    ana="http://syriaca.org/keyword/${ask('Enter the final part of the keyword URI 
+    to be added to http://syriaca.org/keyword/', input_type, '')}">
+    &lt;desc> 
+        In 
+        &lt;choice>
+            &lt;reg>&lt;date when="${ask('Gregorian (regularized) date, with leading 0, e.g., 0950', input_type, 'default_value')}" 
+                calendar="Gregorian">&lt;!-- insert Gregorian date -->&lt;/date>&lt;/reg>
+            &lt;orig>&lt;date when="${ask('Hijri date from text, with leading 0, e.g., 0950', input_type, 'default_value')}" 
+                calendar="Hijri">&lt;!-- insert Hijri date -->&lt;/date>&lt;/orig>
+        &lt;/choice>, 
+		&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+			${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+		&lt;/persName>
+        &lt;!--insert description of event -->
+        at &lt;!-- optional place -->&lt;placeName
+			ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}">
+				${xpath_eval(doc('../../places/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref,'https://usaybia.net/place/',''))}.xml')//placeName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+			&lt;/placeName>.&lt;/desc>
+&lt;/event></String>
+					</field>
+					<field name="descriptionString">
+						<String>Adds event factoid content for a selected person and place</String>
+					</field>
+					<field name="renderString">
+						<String>usy:event</String>
+					</field>
+					<field name="enabled">
+						<Boolean>true</Boolean>
+					</field>
+					<field name="accelerator">
+						<String>M1 M2 E</String>
+					</field>
+				</codeTemplateItem>
+				<codeTemplateItem>
+					<field name="contentType">
+						<String>text/xml</String>
+					</field>
+					<field name="unparsedInsertString">
+						<String>&lt;div 
+    type="factoid" subtype="${ask('factoid subtype', input_type, 'relation')}" 
+    xml:id="factoid-${xpath_eval(string(max(//div/@xml:id/number(replace(.,'factoid-','')))+1))}" 
+    resp="${xpath_eval(//div[@resp][last()]/@resp)}">
+    &lt;idno type="URI">${xpath_eval(replace(//div[starts-with(idno,'https://usaybia.net/factoid')][last()]/idno/text(),'(https://usaybia.net/factoid/\d+-\d+-).*','$1'))}${xpath_eval(string(max(//div/@xml:id/number(replace(.,'factoid-','')))+1))}&lt;/idno>
+    &lt;!-- Insert factoid content here -->
+    &lt;bibl type="urn">
+        ${xpath_eval(//div[bibl/ptr][last()]/bibl/ptr)}
+        &lt;citedRange unit="part">${ask('part number', input_type, '${xpath_eval(//div[bibl/citedRange][last()]/bibl/citedRange/text())}')}&lt;/citedRange>
+    &lt;/bibl>   
+&lt;/div></String>
+					</field>
+					<field name="descriptionString">
+						<String>Factoid</String>
+					</field>
+					<field name="renderString">
+						<String>usy:factoid</String>
+					</field>
+					<field name="enabled">
+						<Boolean>true</Boolean>
+					</field>
+					<field name="accelerator">
+						<String>M1 M2 F</String>
+					</field>
+				</codeTemplateItem>
+				<codeTemplateItem>
+					<field name="contentType">
+						<String>text/xml</String>
+					</field>
+					<field name="unparsedInsertString">
+						<String>${selection}
+&lt;listPerson>
+    &lt;person>
+        &lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}"/>
+        &lt;occupation ana="http://syriaca.org/keyword/${ask('Enter the final part of the keyword URI 
+            to be added to http://syriaca.org/keyword/', input_type, '')}">
+			&lt;note>&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+							${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+			&lt;/persName>
+                was &lt;!-- occupation --> 
+                &lt;!-- optional place -->
+				at &lt;placeName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref)}">
+					${xpath_eval(doc('../../places/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//placeName[1]/@ref,'https://usaybia.net/place/',''))}.xml')//placeName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+				&lt;/placeName>.
+            &lt;/note>
+        &lt;/occupation>
+    &lt;/person>
+&lt;/listPerson></String>
+					</field>
+					<field name="descriptionString">
+						<String>Adds occupation factoid content for a selected person</String>
+					</field>
+					<field name="renderString">
+						<String>usy:occupation</String>
+					</field>
+					<field name="enabled">
+						<Boolean>true</Boolean>
+					</field>
+					<field name="accelerator">
+						<String>M1 M2 O</String>
+					</field>
+				</codeTemplateItem>
+				<!-- Assumes open file is in a data/*/tei/ of the usaybia-data repo -->
+				<codeTemplateItem>
+					<field name="contentType">
+						<String>text/xml</String>
+					</field>
+					<field name="unparsedInsertString">
+						<String>${selection}
+							&lt;listRelation>
+								&lt;relation ref="http://syriaca.org/keyword/${ask('Enter the final part of the keyword URI 
+								to be added to http://syriaca.org/keyword/', input_type, '')}" 
+									mutual="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)} 
+									${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
+									&lt;desc>                
+										&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+											${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+										&lt;/persName> 
+										&lt;!--describe relationship in short phrase, e.g., "corresponded with"--> 
+										&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
+											${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+										&lt;/persName>.
+									&lt;/desc>
+								&lt;/relation>
+							&lt;/listRelation></String>
+					</field>
+					<field name="descriptionString">
+						<String>Adds a mutual relation factoid between two selected URIs</String>
+					</field>
+					<field name="renderString">
+						<String>usy:relation</String>
+					</field>
+					<field name="enabled">
+						<Boolean>true</Boolean>
+					</field>
+					<field name="accelerator">
+						<String>M1 M2 R</String>
+					</field>
+				</codeTemplateItem>
+				<codeTemplateItem>
+					<field name="contentType">
+						<String>text/xml</String>
+					</field>
+					<field name="unparsedInsertString">
+						<String>${selection}
+&lt;listRelation>
+    &lt;relation ref="http://syriaca.org/keyword/${ask('Enter the final part of the keyword URI 
+    to be added to http://syriaca.org/keyword/', input_type, '')}" 
+        active="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}"
+        passive="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
+        &lt;desc>                
+			&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+			${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+			&lt;/persName> 
+            &lt;!--describe relationship in short phrase, e.g., "corresponded with"--> 
+			&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
+				${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+			&lt;/persName>.
+        &lt;/desc>
+    &lt;/relation>
+&lt;/listRelation></String>
+					</field>
+					<field name="descriptionString">
+						<String>Adds an active-passive (person1 is active) relation factoid between two selected URIs</String>
+					</field>
+					<field name="renderString">
+						<String>usy:relation-active1-passive2</String>
+					</field>
+					<field name="enabled">
+						<Boolean>true</Boolean>
+					</field>
+					<field name="accelerator">
+						<String>M1 M2 1</String>
+					</field>
+				</codeTemplateItem>
+				<codeTemplateItem>
+					<field name="contentType">
+						<String>text/xml</String>
+					</field>
+					<field name="unparsedInsertString">
+						<String>${selection}
+&lt;listRelation>
+    &lt;relation ref="http://syriaca.org/keyword/${ask('Enter the final part of the keyword URI 
+    to be added to http://syriaca.org/keyword/', input_type, '')}" 
+        active="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}"
+        passive="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+        &lt;desc>                
+			&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref)}">
+				${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[2]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+			&lt;/persName> 
+            &lt;!--describe relationship in short phrase, e.g., "corresponded with"--> 
+			&lt;persName ref="${xpath_eval(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref)}">
+				${xpath_eval(doc('../../persons/tei/${xpath_eval(replace(parse-xml('&lt;temp>${selection}&lt;/temp>')//persName[1]/@ref,'https://usaybia.net/person/',''))}.xml')//persName[@*='#syriaca-headword' and starts-with(@xml:lang, 'en-')]/text())}
+			&lt;/persName>.
+        &lt;/desc>
+    &lt;/relation>
+&lt;/listRelation></String>
+					</field>
+					<field name="descriptionString">
+						<String>Adds an active-passive (person2 is active) relation factoid between two selected URIs</String>
+					</field>
+					<field name="renderString">
+						<String>usy:relation-active2-passive1</String>
+					</field>
+					<field name="enabled">
+						<Boolean>true</Boolean>
+					</field>
+					<field name="accelerator">
+						<String>M1 M2 2</String>
+					</field>
+				</codeTemplateItem>
+			</codeTemplateItem-array>
+		</entry>
+	</serializableOrderedMap>
+</serialized>
