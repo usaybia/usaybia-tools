@@ -42,7 +42,7 @@ up page breaks and italics:
     </xsl:function>
     
     <!-- regular characters to replace -->
-    <xsl:variable name="key-doc" select="doc('../../data/lhom-encoding-key.tsv')"/>
+    <xsl:variable name="key-doc" select="doc('../../../usaybia-data/data/lhom-encoding-key.tsv')"/>
     <xsl:variable name="key-doc-lines" select="tokenize($key-doc,'\n')"/>
     <xsl:variable name="from">
         <xsl:for-each select="$key-doc-lines">
@@ -56,7 +56,7 @@ up page breaks and italics:
     </xsl:variable>
     
     <!-- special terms to replace -->
-    <xsl:variable name="key-doc-terms" select="doc('../../data/lhom-special-terms-encoding-key.tsv')"/>
+    <xsl:variable name="key-doc-terms" select="doc('../../../usaybia-data/data/lhom-special-terms-encoding-key.tsv')"/>
     <xsl:variable name="key-doc-terms-lines" select="tokenize($key-doc-terms,'\n')"/>
     <xsl:variable name="from-terms">
         <xsl:for-each select="$key-doc-terms-lines">
@@ -70,7 +70,7 @@ up page breaks and italics:
     </xsl:variable>
     
     <!-- formatting -->
-    <xsl:variable name="key-doc-formatting" select="doc('../../data/lhom-formatting-encoding-key.tsv')"/>
+    <xsl:variable name="key-doc-formatting" select="doc('../../../usaybia-data/data/lhom-formatting-encoding-key.tsv')"/>
     <xsl:variable name="key-doc-formatting-lines" select="tokenize($key-doc-formatting,'\n')"/>
     <xsl:variable name="from-formatting">
         <xsl:for-each select="$key-doc-formatting-lines">
@@ -85,7 +85,7 @@ up page breaks and italics:
     
     <xsl:output encoding="UTF-8" indent="yes" method="xml" name="xml"/>
     <xsl:template match="/root">
-        <xsl:result-document href="lhom-personal-names-converted.xml" format="xml">
+        <xsl:result-document href="lhom-index-converted.xml" format="xml">
             <xsl:variable name="characters-replaced">
                 <xsl:for-each select=".">
                     <xsl:copy-of select="functx:replace-multi(.,$from/tei:char/text(),$to/tei:char/text())"/>
