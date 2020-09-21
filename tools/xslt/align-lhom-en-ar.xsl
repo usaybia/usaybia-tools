@@ -16,22 +16,28 @@
         <xsl:param name="text"/>
         <xsl:param name="placeNameWithURI"/>
         <xsl:variable name="placeNameRegex" select="$placeNameWithURI/placeName/text()"/>
-        <xsl:choose>
-            <xsl:when test="matches($text,$placeNameRegex)">
-                <xsl:analyze-string select="$text"
-                    regex="{$placeNameRegex}">
-                    <xsl:matching-substring>
-                        <xsl:copy-of select="$placeNameWithURI"/>
-                    </xsl:matching-substring>
-                    <xsl:non-matching-substring>
-                        <xsl:copy-of select="."/>
-                    </xsl:non-matching-substring>
-                </xsl:analyze-string>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:copy-of select="$text"/>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:for-each select="$text">
+            <xsl:choose>
+                <xsl:when test="matches(.,$placeNameRegex)
+                    and ./*">
+                    <xsl:copy-of select="usy:tagPlaceNames(./node(),$placeNameWithURI)"/>
+                </xsl:when>
+                <xsl:when test="matches(.,$placeNameRegex)">
+                    <xsl:analyze-string select="."
+                        regex="{$placeNameRegex}">
+                        <xsl:matching-substring>
+                            <xsl:copy-of select="$placeNameWithURI"/>
+                        </xsl:matching-substring>
+                        <xsl:non-matching-substring>
+                            <xsl:copy-of select="."/>
+                        </xsl:non-matching-substring>
+                    </xsl:analyze-string>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:copy-of select="."/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
     </xsl:function>
     
     <xsl:template match="/">
