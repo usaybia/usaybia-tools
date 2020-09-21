@@ -16,7 +16,7 @@
     <!-- Collects place names and URIs for matching and tagging -->
     <xsl:variable 
         name="placeName-docs"
-        select="collection('../../../usaybia-data/data/places/tei/?select=*.xml')[1]"/>
+        select="collection('../../../usaybia-data/data/places/tei/?select=*.xml')[position() lt 11]"/>
     <xsl:variable name="placeNames">
         <xsl:for-each select="$placeName-docs/TEI/text/body/listPlace/place/placeName">
             <xsl:variable name="idno" select="./../idno[@type='URI' and starts-with(.,'https://usaybia.net')]"/>
@@ -38,6 +38,85 @@
         
     </xsl:function>
     
+    <xsl:function name="functx:node-kind" as="xs:string*">
+        <xsl:param name="nodes" as="node()*"/>
+        
+        <xsl:sequence select="
+            for $node in $nodes
+            return
+            if ($node instance of element()) then 'element'
+            else if ($node instance of attribute()) then 'attribute'
+            else if ($node instance of text()) then 'text'
+            else if ($node instance of document-node()) then 'document-node'
+            else if ($node instance of comment()) then 'comment'
+            else if ($node instance of processing-instruction())
+            then 'processing-instruction'
+            else 'unknown'
+            "/>
+        
+    </xsl:function>
+    
+    <xsl:function name="functx:atomic-type" as="xs:string*">
+        <xsl:param name="values" as="xs:anyAtomicType*"/>
+        
+        <xsl:sequence select="
+            for $val in $values
+            return
+            (if ($val instance of xs:untypedAtomic) then 'xs:untypedAtomic'
+            else if ($val instance of xs:anyURI) then 'xs:anyURI'
+            else if ($val instance of xs:string) then 'xs:string'
+            else if ($val instance of xs:QName) then 'xs:QName'
+            else if ($val instance of xs:boolean) then 'xs:boolean'
+            else if ($val instance of xs:base64Binary) then 'xs:base64Binary'
+            else if ($val instance of xs:hexBinary) then 'xs:hexBinary'
+            else if ($val instance of xs:integer) then 'xs:integer'
+            else if ($val instance of xs:decimal) then 'xs:decimal'
+            else if ($val instance of xs:float) then 'xs:float'
+            else if ($val instance of xs:double) then 'xs:double'
+            else if ($val instance of xs:date) then 'xs:date'
+            else if ($val instance of xs:time) then 'xs:time'
+            else if ($val instance of xs:dateTime) then 'xs:dateTime'
+            else if ($val instance of xs:dayTimeDuration)
+            then 'xs:dayTimeDuration'
+            else if ($val instance of xs:yearMonthDuration)
+            then 'xs:yearMonthDuration'
+            else if ($val instance of xs:duration) then 'xs:duration'
+            else if ($val instance of xs:gMonth) then 'xs:gMonth'
+            else if ($val instance of xs:gYear) then 'xs:gYear'
+            else if ($val instance of xs:gYearMonth) then 'xs:gYearMonth'
+            else if ($val instance of xs:gDay) then 'xs:gDay'
+            else if ($val instance of xs:gMonthDay) then 'xs:gMonthDay'
+            else 'unknown')
+            "/>
+        
+    </xsl:function>
+    
+    <xsl:function name="functx:sequence-type" as="xs:string">
+        <xsl:param name="items" as="item()*"/>
+        
+        <xsl:sequence select="
+            concat(
+            if (empty($items))
+            then 'empty-sequence()'
+            else if (every $val in $items
+            satisfies $val instance of xs:anyAtomicType)
+            then if (count(distinct-values(functx:atomic-type($items)))
+            > 1)
+            then 'xs:anyAtomicType'
+            else functx:atomic-type($items[1])
+            else if (some $val in $items
+            satisfies $val instance of xs:anyAtomicType)
+            then 'item()'
+            else if (count(distinct-values(functx:node-kind($items))) > 1)
+            then 'node()'
+            else concat(functx:node-kind($items[1]),'()')
+            ,
+            if (count($items) > 1)
+            then '+' else '')
+            "/>
+        
+    </xsl:function>
+    
     <xsl:function name="usy:tagPlaceName">
         <xsl:param name="text"/>
         <xsl:param name="placeNameWithURI"/>
@@ -46,6 +125,10 @@
             select="functx:escape-for-regex($placeNameWithURI/text())"/>
         <xsl:for-each select="$text">
             <xsl:choose>
+                <!-- Tried 
+                    <xsl:when test="matches(.,$placeNameRegex)
+                    and functx:sequence-type(.)!='xs:string'"> 
+                to avoid "string" error on ./* but is not processing child nodes -->
                 <xsl:when test="matches(.,$placeNameRegex)
                     and ./*">
                     <xsl:copy-of select="usy:tagPlaceName(./node(),$placeNameWithURI)"/>
