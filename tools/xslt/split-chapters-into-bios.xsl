@@ -61,7 +61,7 @@
                         </fileDesc>
                         <revisionDesc>
                             <xsl:copy-of select="/TEI/teiHeader/revisionDesc/change"/>
-                            <change xml:id="change-7" who="#ngibson" when="2021-03-16">Split chapter text file into individual biography files.</change>
+                            <change xml:id="change-7" who="#ngibson" when="2021-03-16">Split chapter text file into individual biography files via https://github.com/usaybia/usaybia-tools/blob/33d7a4c0e9246efd9121553310e6b5e85dd68b02/tools/xslt/split-chapters-into-bios.xsl.</change>
                         </revisionDesc>
                     </teiHeader>
                     <text>
