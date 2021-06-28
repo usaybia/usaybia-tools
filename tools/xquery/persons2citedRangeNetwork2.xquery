@@ -16,7 +16,7 @@ declare function srophe:citation-self-and-ancestors
     ( $citation as xs:string, $min-decimals as xs:integer) as xs:string* {
         if (count(tokenize($citation,'\.')) gt ($min-decimals + 1)) then
             ($citation,
-            srophe:citation-self-and-ancestors(replace($citation,'\.\d+$',''), $min-decimals))
+            srophe:citation-self-and-ancestors(replace($citation,'\.[\dＡⅠ]+$',''), $min-decimals))
         else $citation
     };
 
@@ -30,18 +30,38 @@ declare function srophe:cooccurrence-relations
 
 (: Finds citations matching a series of hierarchically organized refs (dot notation, from most-to-least specific) and creates cooccurence relations from these. :)
 declare function srophe:cooccurrence-relations-from-refs
-    ( $source-uris as xs:string*, $citations-to-query as node()*, $refs as xs:string*, $end-ref-pattern as xs:string ) as node()* {
-        for $source at $i in $source-uris
-            for $ref at $level in $refs
-            let $matching-citations := $citations-to-query[matches(.,concat($ref,$end-ref-pattern))][position()>(if ($level=1) then $i else 0)]
-            return srophe:cooccurrence-relations($source, $matching-citations/ancestor::person/idno[matches(.,'https://usaybia.net')]/text(), $ref, $level)
+    ( $persons-index as node()*, $refs as xs:string* ) as node()* {
+        (: Using an index like this makes it 2x as efficient  :)
+        let $ref-index := 
+            for $ref in $refs
+                let $matching-persons := 
+                    for $person in $persons-index[$ref=citedRange/text()]/@ref/string()
+                    return <person ref="{$person}"/>
+                return 
+                    <ref value="{$ref}">
+                        {$matching-persons}
+                    </ref>
+        let $source-uris := $ref-index[1]/person/@ref/string()
+        return 
+            for $source-uri at $i in $source-uris
+                for $ref at $level in $ref-index
+                    let $target-uris := 
+                        if ($level=1) then 
+                            $source-uris[position()>$i]
+                        else 
+                            $ref/person/@ref/string()
+                    return 
+                        if ($level=1) then 
+                            srophe:cooccurrence-relations($source-uri, $target-uris, $ref/@value/string(), $level)
+                        else
+                            srophe:cooccurrence-relations($source-uri, $target-uris, $ref/@value/string(), $level)
     };
 
 
 let $collection := collection('/db/apps/usaybia-data/data/persons/tei/')
 let $persons-all := $collection/TEI/text/body/listPerson/person
 let $lhom-cited := $persons-all/bibl[ptr/@target='https://usaybia.net/bibl/WVSJMDSV']/citedRange
-let $lhom-digits-only := $lhom-cited/replace(.,'([\d\.]+)[^\d\.]*','$1')
+let $lhom-digits-only := $lhom-cited/replace(.,'([\dＡⅠ\.]+)[^\d\.]*','$1')
 let $lhom-digits-distinct := distinct-values($lhom-digits-only)
 let $end-string := 'p?(\s|$)'
 
@@ -51,25 +71,10 @@ let $persons-index :=
         <person ref="{$person/idno[starts-with(.,'https://usaybia.net')]/text()}">
             { for $citedRange in $person/bibl[ptr/@target='https://usaybia.net/bibl/WVSJMDSV']/citedRange[not(matches(.,'nos?\.'))]
             return
-                element citedRange {replace($citedRange,'([\d\.]+)[^\d\.]*','$1')}
+                element citedRange {replace($citedRange,'([\dＡⅠ\.]+)[^\d\.]*','$1')}
                 }
         </person>
 
-for $citation in $lhom-digits-distinct[position()<100]
+for $citation in $lhom-digits-distinct[position()<290 and position() gt 280]
     let $ancestor-refs: = srophe:citation-self-and-ancestors($citation, 1)
-    for $ref in $ancestor-refs
-        let $matching-persons-uris := 
-            for $person in $persons-index[$ref=citedRange/text()]/@ref/string()
-            return <person uri="{$person}"/>
-    return 
-        <ref value="{$ref}">
-            {$matching-persons-uris}
-        </ref>
-
-(: for $citation in $lhom-digits-distinct[position()<100]
-    let $end-string := 'p?(\s|$)'
-    let $persons-with-citation := $lhom-cited[matches(.,concat($citation,$end-string))]/ancestor::person/idno[matches(.,'https://usaybia.net')]/text()
-    let $ancestor-refs: = srophe:citation-self-and-ancestors($citation, 1)
-    return srophe:cooccurrence-relations-from-refs($persons-with-citation, $lhom-cited, $ancestor-refs, $end-string) :)
-
-    (: This is very slow! Need to create index of all URIs per distinct-refs.  :)
+    return srophe:cooccurrence-relations-from-refs($persons-index, $ancestor-refs)
