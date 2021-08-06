@@ -75,6 +75,8 @@ let $persons-index :=
                 }
         </person>
 
-for $citation in $lhom-digits-distinct[position()<290 and position() gt 280]
+return $lhom-digits-distinct[position()<290 and position() gt 280]
+
+(: for $citation in $lhom-digits-distinct[position()<290 and position() gt 280]
     let $ancestor-refs: = srophe:citation-self-and-ancestors($citation, 1)
-    return srophe:cooccurrence-relations-from-refs($persons-index, $ancestor-refs)
+    return srophe:cooccurrence-relations-from-refs($persons-index, $ancestor-refs) :)
