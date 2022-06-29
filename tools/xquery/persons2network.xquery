@@ -3,7 +3,7 @@ xquery version "3.1";
 declare default element namespace 'http://www.tei-c.org/ns/1.0';
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
-let $collection := collection('/db/apps/usaybianet/data/persons/tei/')
+let $collection := collection('/db/apps/usaybia-data/data/persons/tei/')
 
 let $citedRanges := distinct-values($collection//citedRange)
 let $peopleInCitedRanges := 
